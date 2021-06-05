@@ -10,8 +10,8 @@
       <TargetName>ThreadX-BearPi-MDK</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6140000::V6.14::ARMCLANG</pCCUsed>
-      <uAC6>1</uAC6>
+      <pCCUsed>5060750::V5.06 update 6 (build 750)::.\ARMCC</pCCUsed>
+      <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32L431RCTx</Device>
@@ -313,7 +313,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>7</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -322,7 +322,7 @@
             <PlainCh>0</PlainCh>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <wLevel>3</wLevel>
+            <wLevel>2</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32L431xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;../Drivers/STM32L4xx_HAL_Driver/Inc;../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32L4xx/Include;../Drivers/CMSIS/Include;..\threadX\common\inc;..\threadX\ports\cortex_m4\gnu\inc</IncludePath>
+              <IncludePath>../Inc;../Drivers/STM32L4xx_HAL_Driver/Inc;../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32L4xx/Include;../Drivers/CMSIS/Include;..\threadX\common\inc;..\threadX\ports\cortex_m4\ac5\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -357,7 +357,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\threadX\ports\cortex_m4\gnu\inc</IncludePath>
+              <IncludePath>..\threadX\ports\cortex_m4\ac5\inc</IncludePath>
             </VariousControls>
           </Aads>
           <LDads>
@@ -1469,44 +1469,64 @@
           <GroupName>threadX/ports</GroupName>
           <Files>
             <File>
-              <FileName>tx_initialize_low_level_sample.S</FileName>
+              <FileName>tx_thread_context_restore.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\threadX\ports\cortex_m4\gnu\src\tx_initialize_low_level_sample.S</FilePath>
+              <FilePath>..\threadX\ports\cortex_m4\ac5\src\tx_thread_context_restore.s</FilePath>
             </File>
             <File>
-              <FileName>tx_thread_context_restore.S</FileName>
+              <FileName>tx_thread_context_save.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\threadX\ports\cortex_m4\gnu\src\tx_thread_context_restore.S</FilePath>
+              <FilePath>..\threadX\ports\cortex_m4\ac5\src\tx_thread_context_save.s</FilePath>
             </File>
             <File>
-              <FileName>tx_thread_context_save.S</FileName>
+              <FileName>tx_thread_interrupt_control.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\threadX\ports\cortex_m4\gnu\src\tx_thread_context_save.S</FilePath>
+              <FilePath>..\threadX\ports\cortex_m4\ac5\src\tx_thread_interrupt_control.s</FilePath>
             </File>
             <File>
-              <FileName>tx_thread_interrupt_control.S</FileName>
+              <FileName>tx_thread_interrupt_disable.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\threadX\ports\cortex_m4\gnu\src\tx_thread_interrupt_control.S</FilePath>
+              <FilePath>..\threadX\ports\cortex_m4\ac5\src\tx_thread_interrupt_disable.s</FilePath>
             </File>
             <File>
-              <FileName>tx_thread_schedule.S</FileName>
+              <FileName>tx_thread_interrupt_restore.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\threadX\ports\cortex_m4\gnu\src\tx_thread_schedule.S</FilePath>
+              <FilePath>..\threadX\ports\cortex_m4\ac5\src\tx_thread_interrupt_restore.s</FilePath>
             </File>
             <File>
-              <FileName>tx_thread_stack_build.S</FileName>
+              <FileName>tx_thread_schedule.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\threadX\ports\cortex_m4\gnu\src\tx_thread_stack_build.S</FilePath>
+              <FilePath>..\threadX\ports\cortex_m4\ac5\src\tx_thread_schedule.s</FilePath>
             </File>
             <File>
-              <FileName>tx_thread_system_return.S</FileName>
+              <FileName>tx_thread_stack_build.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\threadX\ports\cortex_m4\gnu\src\tx_thread_system_return.S</FilePath>
+              <FilePath>..\threadX\ports\cortex_m4\ac5\src\tx_thread_stack_build.s</FilePath>
             </File>
             <File>
-              <FileName>tx_timer_interrupt.S</FileName>
+              <FileName>tx_thread_system_return.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\threadX\ports\cortex_m4\gnu\src\tx_timer_interrupt.S</FilePath>
+              <FilePath>..\threadX\ports\cortex_m4\ac5\src\tx_thread_system_return.s</FilePath>
+            </File>
+            <File>
+              <FileName>tx_timer_interrupt.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\threadX\ports\cortex_m4\ac5\src\tx_timer_interrupt.s</FilePath>
+            </File>
+            <File>
+              <FileName>tx_initialize_low_level_bearpi.S</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\threadX\ports\cortex_m4\ac5\tx_initialize_low_level_bearpi.S</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Demo</GroupName>
+          <Files>
+            <File>
+              <FileName>applicaiton_entry.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Demo\applicaiton_entry.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1520,8 +1540,8 @@
   <RTE>
     <apis/>
     <components>
-      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.2.0" condition="ARMv6_7_8-M Device">
-        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.5.1"/>
+      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.4.0" condition="ARMv6_7_8-M Device">
+        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.7.0"/>
         <targetInfos>
           <targetInfo name="ThreadX-BearPi-MDK"/>
         </targetInfos>

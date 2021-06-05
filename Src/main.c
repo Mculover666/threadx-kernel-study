@@ -57,41 +57,6 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-TX_THREAD my_thread1;
-
-TX_THREAD my_thread2;
-
-
-void my_thread1_entry(ULONG thread_input)
-{
-  /* Enter into a forever loop. */
-  while(1)
-  {
-    printf("threadx 1 application running...\r\n");
-    /* Sleep for 1 tick. */
-    tx_thread_sleep(1000);
-  }
-}
-void my_thread2_entry(ULONG thread_input)
-{
-  /* Enter into a forever loop. */
-  while(1)
-  {
-    printf("threadx 2 application running...\r\n");
-    /* Sleep for 1 tick. */
-    tx_thread_sleep(1000);
-  }
-}
-
-void tx_application_define(void *first_unused_memory)
-{
-  /* Create my_thread! */
-  tx_thread_create(&my_thread1, "My Thread 1",
-  my_thread1_entry, 0x1234, first_unused_memory, 1024, 3, 3, TX_NO_TIME_SLICE, TX_AUTO_START);
-  
-  tx_thread_create(&my_thread2, "My Thread 2",
-  my_thread2_entry, 0x1234, first_unused_memory+1024, 1024, 1, 1, TX_NO_TIME_SLICE, TX_AUTO_START);
-}
 
 /* USER CODE END 0 */
 

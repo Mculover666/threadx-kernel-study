@@ -21,21 +21,16 @@
 @/**************************************************************************/
 @
 @
-@#define TX_SOURCE_CODE
-@
-@
-@/* Include necessary system files.  */
-@
-@#include "tx_api.h"
-@#include "tx_thread.h"
-@#include "tx_timer.h"
-@   
     .global     _tx_thread_current_ptr
     .global     _tx_thread_execute_ptr
     .global     _tx_timer_time_slice
     .global     _tx_thread_system_stack_ptr
     .global     _tx_execution_thread_enter
     .global     _tx_execution_thread_exit
+#ifdef TX_LOW_POWER
+    .global tx_low_power_enter
+    .global tx_low_power_exit
+#endif
 @
 @
     .text
@@ -46,7 +41,7 @@
 @/*  FUNCTION                                               RELEASE        */
 @/*                                                                        */
 @/*    _tx_thread_schedule                               Cortex-M3/GNU     */
-@/*                                                           6.0          */
+@/*                                                           6.1.5        */
 @/*  AUTHOR                                                                */
 @/*                                                                        */
 @/*    William E. Lamie, Microsoft Corporation                             */
@@ -79,7 +74,12 @@
 @/*                                                                        */
 @/*    DATE              NAME                      DESCRIPTION             */
 @/*                                                                        */
-@/*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+@/*  05-19-2020     William E. Lamie        Initial Version 6.0            */
+@/*  09-30-2020     William E. Lamie        Modified comment(s),           */
+@/*                                            resulting in version 6.1    */
+@/*  03-02-2021     Scott Larson            Modified comment(s), add       */
+@/*                                           low power code,              */
+@/*                                           resulting in version 6.1.5   */
 @/*                                                                        */
 @/**************************************************************************/
 @VOID   _tx_thread_schedule(VOID)
@@ -93,7 +93,7 @@ _tx_thread_schedule:
 @       from the PendSV handling routines below. */
 @
 @    /* Clear the preempt-disable flag to enable rescheduling after initialization on Cortex-M targets.  */
-@     
+@
     MOV     r0, #0                                  @ Build value for TX_FALSE
     LDR     r2, =_tx_thread_preempt_disable         @ Build address of preempt disable flag
     STR     r0, [r2, #0]                            @ Clear preempt disable flag
@@ -101,7 +101,7 @@ _tx_thread_schedule:
 @    /* Enable interrupts */
 @
     CPSIE   i
-@            
+@
 @    /* Enter the scheduler for the first time.  */
 @
     MOV     r0, #0x10000000                         @ Load PENDSVSET bit
@@ -111,14 +111,14 @@ _tx_thread_schedule:
     ISB                                             @ Flush pipeline
 @
 @    /* Wait here for the PendSV to take place.  */
-@     
+@
 __tx_wait_here:
     B       __tx_wait_here                          @ Wait for the PendSV to happen
 @}
 @
-@    /* Generic context switch-out switch-in handler...  Note that this handler is 
+@    /* Generic context switch-out switch-in handler...  Note that this handler is
 @       common for both PendSV and SVCall.  */
-@     
+@
     .global  PendSV_Handler
     .global  __tx_PendSVHandler
     .thumb_func
@@ -127,8 +127,8 @@ PendSV_Handler:
 __tx_PendSVHandler:
 @
 @    /* Get current thread value and new thread pointer.  */
-@       
-__tx_ts_handler: 
+@
+__tx_ts_handler:
 
 #ifdef TX_ENABLE_EXECUTION_CHANGE_NOTIFY
 @
@@ -146,7 +146,7 @@ __tx_ts_handler:
     LDR     r1, [r0]                                @ Pickup current thread pointer
 @
 @    /* Determine if there is a current thread to finish preserving.  */
-@       
+@
     CBZ     r1, __tx_ts_new                         @ If NULL, skip preservation
 @
 @    /* Recover PSP and preserve current thread context.  */
@@ -171,7 +171,7 @@ __tx_ts_handler:
 @
     STR     r3, [r4]                                @ Clear time-slice
 @
-@       
+@
 @    /* Executing thread is now completely preserved!!!  */
 @
 __tx_ts_new:
@@ -217,11 +217,11 @@ __tx_ts_restore:
     MSR     PSP, r12                                @ Setup the thread's stack pointer
 @
 @    /* Return to thread.  */
-@       
+@
     BX      lr                                      @ Return to thread!
 @
 @    /* The following is the idle wait processing... in this case, no threads are ready for execution and the
-@       system will simply be idle until an interrupt occurs that makes a thread ready. Note that interrupts 
+@       system will simply be idle until an interrupt occurs that makes a thread ready. Note that interrupts
 @       are disabled to allow use of WFI for waiting for a thread to arrive.  */
 @
 __tx_ts_wait:
@@ -229,24 +229,37 @@ __tx_ts_wait:
     LDR     r1, [r2]                                @ Pickup the next thread to execute pointer
     STR     r1, [r0]                                @ Store it in the current pointer
     CBNZ    r1, __tx_ts_ready                       @ If non-NULL, a new thread is ready!
+
+#ifdef TX_LOW_POWER
+    PUSH    {r0-r3}
+    BL      tx_low_power_enter                      @ Possibly enter low power mode
+    POP     {r0-r3}
+#endif
+
 #ifdef TX_ENABLE_WFI
     DSB                                             @ Ensure no outstanding memory transactions
     WFI                                             @ Wait for interrupt
     ISB                                             @ Ensure pipeline is flushed
 #endif
+
+#ifdef TX_LOW_POWER
+    PUSH    {r0-r3}
+    BL      tx_low_power_exit                       @ Exit low power mode
+    POP     {r0-r3}
+#endif
+
     CPSIE   i                                       @ Enable interrupts
     B       __tx_ts_wait                            @ Loop to continue waiting
 @
-@    /* At this point, we have a new thread ready to go. Clear any newly pended PendSV - since we are 
+@    /* At this point, we have a new thread ready to go. Clear any newly pended PendSV - since we are
 @       already in the handler!  */
 @
 __tx_ts_ready:
     MOV     r7, #0x08000000                         @ Build clear PendSV value
     MOV     r8, #0xE000E000                         @ Build base NVIC address
-    STR     r7, [r8, #0xD04]                        @ Clear any PendSV 
+    STR     r7, [r8, #0xD04]                        @ Clear any PendSV
 @
 @    /* Re-enable interrupts and restore new thread.  */
-@       
+@
     CPSIE   i                                       @ Enable interrupts
     B       __tx_ts_restore                         @ Restore the thread
-    

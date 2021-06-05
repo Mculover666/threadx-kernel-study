@@ -21,15 +21,6 @@
 @/**************************************************************************/
 @
 @
-@#define TX_SOURCE_CODE
-@
-@
-@/* Include necessary system files.  */
-@
-@#include "tx_api.h"
-@#include "tx_thread.h"
-@
-@
     .text
     .align 4
     .syntax unified
@@ -38,7 +29,7 @@
 @/*  FUNCTION                                               RELEASE        */
 @/*                                                                        */
 @/*    _tx_thread_stack_build                            Cortex-M0/GNU     */
-@/*                                                           6.0          */
+@/*                                                           6.1          */
 @/*  AUTHOR                                                                */
 @/*                                                                        */
 @/*    William E. Lamie, Microsoft Corporation                             */
@@ -71,6 +62,12 @@
 @/*    DATE              NAME                      DESCRIPTION             */
 @/*                                                                        */
 @/*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+@/*  09-30-2020     William E. Lamie         Modified Comment(s), setting  */
+@/*                                            R10 to top of stack is not  */
+@/*                                            needed. Removed references  */
+@/*                                            to stack frame, clean up    */
+@/*                                            whitespace, resulting       */
+@/*                                            in version 6.1              */
 @/*                                                                        */
 @/**************************************************************************/
 @VOID   _tx_thread_stack_build(TX_THREAD *thread_ptr, VOID (*function_ptr)(VOID))
@@ -79,20 +76,20 @@
     .thumb_func
 _tx_thread_stack_build:
 @
-@       
+@
 @    /* Build a fake interrupt frame.  The form of the fake interrupt stack
 @       on the Cortex-M0 should look like the following after it is built:
-@       
-@       Stack Top:      
+@
+@       Stack Top:
 @                       LR          Interrupted LR (LR at time of PENDSV)
+@                       r8          Initial value for r8
+@                       r9          Initial value for r9
+@                       r10         Initial value for r10
+@                       r11         Initial value for r11
 @                       r4          Initial value for r4
 @                       r5          Initial value for r5
 @                       r6          Initial value for r6
 @                       r7          Initial value for r7
-@                       r8          Initial value for r8
-@                       r9          Initial value for r9
-@                       r10 (sl)    Initial value for r10 (sl)
-@                       r11         Initial value for r11
 @                       r0          Initial value for r0    (Hardware stack starts here!!)
 @                       r1          Initial value for r1
 @                       r2          Initial value for r2
@@ -105,7 +102,7 @@ _tx_thread_stack_build:
 @    Stack Bottom: (higher memory address)  */
 @
     LDR     r2, [r0, #16]                           @ Pickup end of stack area
-    MOVS    r3, #0x7                                @ 
+    MOVS    r3, #0x7                                @
     BICS    r2, r2, r3                              @ Align frame for 8-byte alignment
     SUBS    r2, r2, #68                             @ Subtract frame size
     LDR     r3, =0xFFFFFFFD                         @ Build initial LR value
@@ -114,16 +111,14 @@ _tx_thread_stack_build:
 @    /* Actually build the stack frame.  */
 @
     MOVS    r3, #0                                  @ Build initial register value
-    STR     r3, [r2, #4]                            @ Store initial r4
-    STR     r3, [r2, #8]                            @ Store initial r5
-    STR     r3, [r2, #12]                           @ Store initial r6
-    STR     r3, [r2, #16]                           @ Store initial r7
-    STR     r3, [r2, #20]                           @ Store initial r8
-    STR     r3, [r2, #24]                           @ Store initial r9
-    LDR     r3, [r0, #12]                           @ Pickup stack starting address
-    STR     r3, [r2, #28]                           @ Store initial r10 (sl)
-    MOVS    r3, #0                                  @ Build initial register value
-    STR     r3, [r2, #32]                           @ Store initial r11
+    STR     r3, [r2, #4]                            @ Store initial r8
+    STR     r3, [r2, #8]                            @ Store initial r9
+    STR     r3, [r2, #12]                           @ Store initial r10
+    STR     r3, [r2, #16]                           @ Store initial r11
+    STR     r3, [r2, #20]                           @ Store initial r4
+    STR     r3, [r2, #24]                           @ Store initial r5
+    STR     r3, [r2, #28]                           @ Store initial r6
+    STR     r3, [r2, #32]                           @ Store initial r7
 @
 @    /* Hardware stack follows.  */
 @
@@ -145,5 +140,3 @@ _tx_thread_stack_build:
                                                     @   control block
     BX      lr                                      @ Return to caller
 @}
-
-
