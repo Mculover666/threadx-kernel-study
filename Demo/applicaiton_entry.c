@@ -2,12 +2,12 @@
 #include "tx_api.h"
 #include "main.h"
 
-#define THREAD1_PRIO         2
+#define THREAD1_PRIO         3
 #define THREAD1_STACK_SIZE   1024
 static  TX_THREAD thread1;
 uint8_t thread1_stack[THREAD1_STACK_SIZE];
 
-#define THREAD2_PRIO         3
+#define THREAD2_PRIO         2
 #define THREAD2_STACK_SIZE   1024
 static  TX_THREAD thread2;
 uint8_t thread2_stack[THREAD2_STACK_SIZE];
@@ -18,7 +18,7 @@ void my_thread1_entry(ULONG thread_input)
   while(1)
   {
     printf("threadx 1 application running...\r\n");
-    /* Sleep for 1 tick. */
+    /* Sleep for 1000 tick. */
     tx_thread_sleep(1000);
   }
 }
@@ -29,7 +29,7 @@ void my_thread2_entry(ULONG thread_input)
   while(1)
   {
     printf("threadx 2 application running...\r\n");
-    /* Sleep for 1 tick. */
+    /* Sleep for 1000 tick. */
     tx_thread_sleep(1000);
   }
 }
