@@ -337,7 +337,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_HAL_DRIVER,STM32L431xx</Define>
+              <Define>USE_HAL_DRIVER,STM32L431xx,TX_INCLUDE_USER_DEFINE_FILE</Define>
               <Undefine></Undefine>
               <IncludePath>../Inc;../Drivers/STM32L4xx_HAL_Driver/Inc;../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32L4xx/Include;../Drivers/CMSIS/Include;..\threadX\common\inc;..\threadX\ports\cortex_m4\ac5\inc</IncludePath>
             </VariousControls>
@@ -1517,6 +1517,16 @@
               <FileName>tx_initialize_low_level_bearpi.S</FileName>
               <FileType>2</FileType>
               <FilePath>..\threadX\ports\cortex_m4\ac5\tx_initialize_low_level_bearpi.S</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>threadX/config</GroupName>
+          <Files>
+            <File>
+              <FileName>tx_user.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\threadX\common\inc\tx_user.h</FilePath>
             </File>
           </Files>
         </Group>
