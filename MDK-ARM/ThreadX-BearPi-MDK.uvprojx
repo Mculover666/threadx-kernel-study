@@ -48,14 +48,14 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>ThreadX-BearPi-MDK\</OutputDirectory>
+          <OutputDirectory>.\ThreadX-BearPi-MDK\</OutputDirectory>
           <OutputName>ThreadX-BearPi-MDK</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>0</BrowseInformation>
-          <ListingPath></ListingPath>
+          <ListingPath>.\ThreadX-BearPi-MDK\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32L431xx,TX_INCLUDE_USER_DEFINE_FILE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;../Drivers/STM32L4xx_HAL_Driver/Inc;../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32L4xx/Include;../Drivers/CMSIS/Include;..\threadX\common\inc;..\threadX\ports\cortex_m4\ac5\inc</IncludePath>
+              <IncludePath>../Inc;../Drivers/STM32L4xx_HAL_Driver/Inc;../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32L4xx/Include;../Drivers/CMSIS/Include;..\threadX\common\inc;..\threadX\ports\cortex_m4\ac5\inc;..\threadX\config</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -357,7 +357,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\threadX\ports\cortex_m4\ac5\inc</IncludePath>
+              <IncludePath>..\threadX\ports\cortex_m4\keil\inc</IncludePath>
             </VariousControls>
           </Aads>
           <LDads>
@@ -1471,52 +1471,52 @@
             <File>
               <FileName>tx_thread_context_restore.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\threadX\ports\cortex_m4\ac5\src\tx_thread_context_restore.s</FilePath>
+              <FilePath>..\threadX\ports\cortex_m4\keil\src\tx_thread_context_restore.s</FilePath>
             </File>
             <File>
               <FileName>tx_thread_context_save.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\threadX\ports\cortex_m4\ac5\src\tx_thread_context_save.s</FilePath>
+              <FilePath>..\threadX\ports\cortex_m4\keil\src\tx_thread_context_save.s</FilePath>
             </File>
             <File>
               <FileName>tx_thread_interrupt_control.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\threadX\ports\cortex_m4\ac5\src\tx_thread_interrupt_control.s</FilePath>
+              <FilePath>..\threadX\ports\cortex_m4\keil\src\tx_thread_interrupt_control.s</FilePath>
             </File>
             <File>
               <FileName>tx_thread_interrupt_disable.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\threadX\ports\cortex_m4\ac5\src\tx_thread_interrupt_disable.s</FilePath>
+              <FilePath>..\threadX\ports\cortex_m4\keil\src\tx_thread_interrupt_disable.s</FilePath>
             </File>
             <File>
               <FileName>tx_thread_interrupt_restore.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\threadX\ports\cortex_m4\ac5\src\tx_thread_interrupt_restore.s</FilePath>
+              <FilePath>..\threadX\ports\cortex_m4\keil\src\tx_thread_interrupt_restore.s</FilePath>
             </File>
             <File>
               <FileName>tx_thread_schedule.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\threadX\ports\cortex_m4\ac5\src\tx_thread_schedule.s</FilePath>
+              <FilePath>..\threadX\ports\cortex_m4\keil\src\tx_thread_schedule.s</FilePath>
             </File>
             <File>
               <FileName>tx_thread_stack_build.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\threadX\ports\cortex_m4\ac5\src\tx_thread_stack_build.s</FilePath>
+              <FilePath>..\threadX\ports\cortex_m4\keil\src\tx_thread_stack_build.s</FilePath>
             </File>
             <File>
               <FileName>tx_thread_system_return.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\threadX\ports\cortex_m4\ac5\src\tx_thread_system_return.s</FilePath>
+              <FilePath>..\threadX\ports\cortex_m4\keil\src\tx_thread_system_return.s</FilePath>
             </File>
             <File>
               <FileName>tx_timer_interrupt.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\threadX\ports\cortex_m4\ac5\src\tx_timer_interrupt.s</FilePath>
+              <FilePath>..\threadX\ports\cortex_m4\keil\src\tx_timer_interrupt.s</FilePath>
             </File>
             <File>
-              <FileName>tx_initialize_low_level_bearpi.S</FileName>
+              <FileName>tx_initialize_low_level_keil.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\threadX\ports\cortex_m4\ac5\tx_initialize_low_level_bearpi.S</FilePath>
+              <FilePath>.\tx_initialize_low_level_keil.s</FilePath>
             </File>
           </Files>
         </Group>
@@ -1526,7 +1526,7 @@
             <File>
               <FileName>tx_user.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\threadX\common\inc\tx_user.h</FilePath>
+              <FilePath>..\threadX\config\tx_user.h</FilePath>
             </File>
           </Files>
         </Group>
